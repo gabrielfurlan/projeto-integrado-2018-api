@@ -1,1 +1,3 @@
-/home/gabriel/eclipse-workspace/projeto-integrado/src/main/java/projeto_integrado/projeto_integrado/App.java
+/home/gabriel/eclipse-workspace/projeto-integrado/src/main/java/server/Application.java
+/home/gabriel/eclipse-workspace/projeto-integrado/src/main/java/models/User.java
+/home/gabriel/eclipse-workspace/projeto-integrado/src/main/java/controllers/AuthenticationController.java
