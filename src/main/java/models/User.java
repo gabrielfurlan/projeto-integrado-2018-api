@@ -1,18 +1,51 @@
 package models;
 
+import java.sql.Date;
+import java.util.UUID;
+
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Table(name = "Users")
 public class User {
 	
-	// Params
+	@Id
 	private String id;
-	private String email;
-	private String password;
-	private String firstNname;
-	private String lastName;
-	private String createdAt;
-	private String role;
-	private String analytId;
-	private String manageId;
 	
+	@NotBlank
+	private String email;
+	
+	private String password;
+	
+	@Column(name = "first_name")
+	@NotBlank
+	private String firstName;
+
+	@Column(name = "last_name")
+	@NotBlank
+	private String lastName;
+	
+	@Column(name = "created_at")
+	private Date createdAt;
+	
+	@NotBlank
+	private String role;
+
+	@Column(name = "analyst_id")
+	@NotBlank
+	private String analystId;
+	
+	@Column(name = "manager_id")
+	private String managerId;
+	
+	
+	// users helpers
+	public static String idGenerator() {
+		return UUID.randomUUID().toString();
+	}
+
 	// Getters and Setters
 	public String getId() {
 		return id;
@@ -38,12 +71,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getFirstNname() {
-		return firstNname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirstNname(String firstNname) {
-		this.firstNname = firstNname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
@@ -54,11 +87,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(String createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -70,19 +103,19 @@ public class User {
 		this.role = role;
 	}
 
-	public String getAnalytId() {
-		return analytId;
+	public String getAnalystId() {
+		return analystId;
 	}
 
-	public void setAnalytId(String analytId) {
-		this.analytId = analytId;
+	public void setAnalystId(String analystId) {
+		this.analystId = analystId;
 	}
 
-	public String getManageId() {
-		return manageId;
+	public String getManagerId() {
+		return managerId;
 	}
 
-	public void setManageId(String manageId) {
-		this.manageId = manageId;
+	public void setManagerId(String managerId) {
+		this.managerId = managerId;
 	}
 }
