@@ -1,13 +1,15 @@
 package com.boot.spring.model;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import com.boot.spring.utils.CryptUtil;
 
 @Entity
 @Table(name = "users")
@@ -25,7 +27,10 @@ public class User {
 	private String lastName;
 	
 	@Column(name = "email")
-	private String email;
+	private String email; 
+	
+	@Column(name = "password")
+	private String password;
 	
 	// Getter and Setter
 	public void setFirstName(String firstName) {
@@ -58,6 +63,24 @@ public class User {
 	
 	public String getId() {
 		return id;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	// users helpers
+	public static String idGenerator() {
+		return UUID.randomUUID().toString();
+	}
+	
+	public boolean isValidPassword(String password) {
+		System.out.println(this.password);
+		return CryptUtil.verify(password, this.password);
 	}
 	
 }
