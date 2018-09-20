@@ -32,6 +32,9 @@ public class User {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "role")
+	private String role;
+	
 	// Getter and Setter
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -73,13 +76,20 @@ public class User {
 		return password;
 	}
 	
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+	
 	// users helpers
 	public static String idGenerator() {
 		return UUID.randomUUID().toString();
 	}
 	
 	public boolean isValidPassword(String password) {
-		System.out.println(this.password);
 		return CryptUtil.verify(password, this.password);
 	}
 	
