@@ -14,59 +14,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boot.spring.model.Task;
 import com.boot.spring.model.User;
-import com.boot.spring.service.UsersService;
-import com.boot.spring.utils.CryptUtil;
+import com.boot.spring.service.TasksService;
 import com.boot.spring.utils.StatusUtil;
 
 @RestController
-@RequestMapping("/user")
-@CrossOrigin(origins = {"http://localhost:8888"})
-public class UserController {
+@RequestMapping("/task")
+@CrossOrigin(origins = { "http://localhost:8888" })
+public class TaskController {
 	
 	@Autowired
-	private UsersService usersService;
+	private TasksService tasks;
 	
 	@GetMapping("/{id:.+}")
 	public @ResponseBody Response getOne(@PathVariable @NotNull String id) {		
-		User user = usersService.findOne(id);
+		Task task = tasks.findOne(id);
 		
-		if(user == null)
-			return new Response(StatusUtil.NOT_FOUND, "User Not Found");
+		if(task == null)
+			return new Response(StatusUtil.NOT_FOUND, "Task Not Found");
 		
-		return new Response(StatusUtil.SUCCESS, user);
+		return new Response(StatusUtil.SUCCESS, task);
 	}
 	
-	@PostMapping("/{id}/verify")
-	public @ResponseBody Response verifyPassword(@PathVariable @NotNull String id, @RequestBody User body) {		
-		User user = usersService.findOne(id);
+	@PostMapping("/{id:.+}/edit-status")
+	public @ResponseBody Response editStatus(@PathVariable @NotNull String id, @RequestBody Task body) {
+		Task task = tasks.findOne(id);
 		
-		if(user == null)
-			return new Response(StatusUtil.NOT_FOUND, "User Not Found");
+		if(task == null)
+			return new Response(StatusUtil.NOT_FOUND, "Task Not Found");
 		
-		if(!user.isValidPassword(body.getPassword()))
-			return new Response(StatusUtil.WRONG_PASSWORD, "Wrong Password");
+		task.setStatus(body.getStatus());
+		task = tasks.save(task);
 		
-		return new Response(StatusUtil.SUCCESS, user);
-	}
-	
-	@GetMapping("/generate-password/{password}")
-	public String generatePassword(@PathVariable String password) {
-		return CryptUtil.hash(password);
+		return new Response(StatusUtil.SUCCESS, task);
 	}
 	
 	private class Response {
 		public int status;
 		public String message;
-		public User user;
+		public Task task;
 		
 		public Response(int status) {
 			this.status = status;
 		}
 		
-		public Response(int status, User user) {
+		public Response(int status, Task task) {
 			this.status = status;
-			this.user = user;
+			this.task = task;
 		}
 		
 		public Response(int status, String message) {
@@ -74,11 +69,10 @@ public class UserController {
 			this.message = message;
 		}
 		
-		public Response(int status, User user, String message) {
+		public Response(int status, Task task, String message) {
 			this.status = status;
-			this.user = user;
+			this.task = task;
 			this.message = message;
 		}
 	}
-	
 }

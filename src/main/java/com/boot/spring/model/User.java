@@ -16,7 +16,6 @@ import com.boot.spring.utils.CryptUtil;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private String id;
 	
@@ -29,12 +28,20 @@ public class User {
 	@Column(name = "email")
 	private String email; 
 	
+	@Column(name = "birthday")
+	private String birthday; 
+	
 	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "role")
 	private String role;
 	
+	@Column(name = "analyst_id")
+	private String analystId;
+	
+	@Column(name = "manager_id")
+	private String managerId;
+
 	// Getter and Setter
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -82,6 +89,30 @@ public class User {
 	
 	public String getRole() {
 		return role;
+	}
+	
+	public String getAnalystId() {
+		return analystId;
+	}
+	
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public void setAnalystId(String analystId) {
+		this.analystId = analystId;
+	}
+
+	public String getManagerId() {
+		return managerId;
+	}
+
+	public void setManagerId(String managerId) {
+		this.managerId = managerId;
 	}
 	
 	// users helpers

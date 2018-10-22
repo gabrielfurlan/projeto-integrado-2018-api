@@ -14,59 +14,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.boot.spring.model.User;
-import com.boot.spring.service.UsersService;
-import com.boot.spring.utils.CryptUtil;
+import com.boot.spring.model.Project;
+import com.boot.spring.service.ProjectsService;
 import com.boot.spring.utils.StatusUtil;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/project")
 @CrossOrigin(origins = {"http://localhost:8888"})
-public class UserController {
+public class ProjectController {
 	
 	@Autowired
-	private UsersService usersService;
+	private ProjectsService projectsService;
 	
-	@GetMapping("/{id:.+}")
+	@GetMapping("/{id}")
 	public @ResponseBody Response getOne(@PathVariable @NotNull String id) {		
-		User user = usersService.findOne(id);
+		Project project = projectsService.findOne(id);
 		
-		if(user == null)
-			return new Response(StatusUtil.NOT_FOUND, "User Not Found");
+		if(project == null)
+			return new Response(StatusUtil.NOT_FOUND, "Projects Not Found");
 		
-		return new Response(StatusUtil.SUCCESS, user);
-	}
-	
-	@PostMapping("/{id}/verify")
-	public @ResponseBody Response verifyPassword(@PathVariable @NotNull String id, @RequestBody User body) {		
-		User user = usersService.findOne(id);
-		
-		if(user == null)
-			return new Response(StatusUtil.NOT_FOUND, "User Not Found");
-		
-		if(!user.isValidPassword(body.getPassword()))
-			return new Response(StatusUtil.WRONG_PASSWORD, "Wrong Password");
-		
-		return new Response(StatusUtil.SUCCESS, user);
-	}
-	
-	@GetMapping("/generate-password/{password}")
-	public String generatePassword(@PathVariable String password) {
-		return CryptUtil.hash(password);
+		return new Response(StatusUtil.SUCCESS, project);
 	}
 	
 	private class Response {
 		public int status;
 		public String message;
-		public User user;
+		public Project project;
 		
 		public Response(int status) {
 			this.status = status;
 		}
 		
-		public Response(int status, User user) {
+		public Response(int status, Project project) {
 			this.status = status;
-			this.user = user;
+			this.project = project;
 		}
 		
 		public Response(int status, String message) {
@@ -74,9 +55,9 @@ public class UserController {
 			this.message = message;
 		}
 		
-		public Response(int status, User user, String message) {
+		public Response(int status, Project project, String message) {
 			this.status = status;
-			this.user = user;
+			this.project = project;
 			this.message = message;
 		}
 	}

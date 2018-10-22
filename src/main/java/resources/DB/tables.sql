@@ -1,6 +1,7 @@
 drop database if exists projeto_integrado;
 create database if not exists projeto_integrado;
 use projeto_integrado;
+
 ## Creating users table
 create table users (
 	id varchar(255),
@@ -23,12 +24,14 @@ create table managers (
     constraint managers_pk primary key(id),
     constraint managers_users_fk foreign key (user_id) references users(id)
 );
+
 ## Adding manager reference in users table
 alter table users
 add column manager_id varchar(255);
 alter table users
 add constraint users_managers_fk foreign key (manager_id)
 references managers(id);
+
 ## Creating analysts table
 create table analysts (
 	id varchar(255),
@@ -37,9 +40,68 @@ create table analysts (
     constraint analysts_pk primary key(id),
     constraint analysts_users_fk foreign key (user_id) references users(id)
 );
+
 ## Adding analyst reference in users table
 alter table users
 add column analyst_id varchar(255);
 alter table users
 add constraint users_analysts_fk foreign key (analyst_id)
 references analysts(id);
+
+## Creating sectors table
+create table sectors (
+	id varchar(255),
+    name varchar(255),
+    
+    constraint sectors_pk primary key(id)
+);
+
+## Creating clients table
+## drop table clients;
+create table clients (
+	id varchar(255),
+    name varchar(255) not null,
+    email varchar(255) not null,
+    sector_id varchar(255) not null,
+    phone_number varchar(255) not null,
+    
+    constraint clients_pk primary key(id),
+    constraint clients_sectors_fk foreign key (sector_id) references sectors(id)
+);
+
+alter table clients
+add column cnpj varchar(255) not null;
+
+## Creating projects table
+## drop table projects;
+create table projects (
+	id varchar(255),
+    name varchar(255),
+    client_id varchar(255),
+    description text(500),
+    
+    constraint projects_pk primary key(id),
+    constraint projects_clients_fk foreign key (client_id) references clients(id)
+);
+
+## Creating tasks table
+## drop table tasks;
+create table tasks (
+	id varchar(255),
+    name varchar(255),
+    description text(500),
+    assign_to varchar(255),
+    estimated_time int(2) default 1,
+    priority varchar(255) default 'low',
+    project_id varchar(255) not null, 
+	created_at timestamp not null default now(),
+    status varchar(255) default 'to-do',
+    
+    constraint tasks_id primary key(id),
+    constraint tasks_projects_fk foreign key (project_id) references projects(id),
+    constraint tasks_analysts_fk foreign key (assign_to) references analysts(id)
+);
+
+## Alter table on users
+alter table users
+add column gender enum('female', 'male') not null;
