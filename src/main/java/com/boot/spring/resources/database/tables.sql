@@ -53,3 +53,12 @@ alter table users
 add constraint users_analysts_fk foreign key (analyst_id)
 references analysts(id);
 
+CREATE TABLE files_resource(
+
+	id			varchar(255) not null,
+    resource_id	varchar(255) not null,
+    file		mediumblob,
+    
+    constraint files_resource_pk primary key(id),
+    constraint resources_fk foreign key (resource_id) references resources(id)
+)
