@@ -61,4 +61,6 @@ CREATE TABLE files_resource(
     
     constraint files_resource_pk primary key(id),
     constraint resources_fk foreign key (resource_id) references resources(id)
-)
+);
+
+alter table files_resource add name varchar(255) not null;
