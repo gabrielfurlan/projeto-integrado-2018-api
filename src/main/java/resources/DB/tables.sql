@@ -129,3 +129,9 @@ CREATE TABLE time_logs (
     constraint time_logs_pk primary key(id),
     constraint time_logs_tasks_fk foreign key(task_id) references tasks(id)
 ); 
+
+alter table time_logs add user_id varchar(255) not null;
+
+alter table time_logs
+add constraint time_logs_users_fk foreign key(user_id)
+references users(id);
