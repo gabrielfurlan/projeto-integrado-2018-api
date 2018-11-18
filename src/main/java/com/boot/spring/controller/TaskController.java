@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boot.spring.model.Log;
 import com.boot.spring.model.Task;
 import com.boot.spring.model.User;
+import com.boot.spring.service.LogsService;
 import com.boot.spring.service.TasksService;
 import com.boot.spring.utils.StatusUtil;
 
@@ -26,6 +28,9 @@ public class TaskController {
 	
 	@Autowired
 	private TasksService tasks;
+	
+	@Autowired
+	private LogsService logs;
 	
 	@GetMapping("/{id:.+}")
 	public @ResponseBody Response getOne(@PathVariable @NotNull String id) {		
@@ -48,6 +53,11 @@ public class TaskController {
 		task = tasks.save(task);
 		
 		return new Response(StatusUtil.SUCCESS, task);
+	}
+	
+	@GetMapping("/{id:.+}/logs")
+	public @ResponseBody List<Log> getLogs(@PathVariable @NotNull String id) {		
+		return logs.findByTaskId(id);
 	}
 	
 	private class Response {
